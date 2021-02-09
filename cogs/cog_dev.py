@@ -1,3 +1,8 @@
+"""
+Default cog example. Seems useful. I will keep for now.
+
+"""
+
 import discord
 from discord.ext import commands
 
