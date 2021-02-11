@@ -16,13 +16,12 @@ async def on_ready():
 
 
 extensions = [
-	'cogs.cog_brainfuck',
-	"cogs.cog_dev"
+	"cogs.cog_dev",
 ]
 
 if __name__ == '__main__':  
 	for extension in extensions:
-		bot.load_extension(extension)  #
+		bot.load_extension(extension)
 
 keep_alive()  
 token = os.environ.get("DISCORD_BOT_SECRET") 
