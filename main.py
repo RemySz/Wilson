@@ -1,6 +1,7 @@
 import os
 from keep_alive import keep_alive
 from discord.ext import commands
+import lib.lib_math as math
 
 bot = commands.Bot(
 	command_prefix="::",  
@@ -13,10 +14,24 @@ bot.author_id = None # for now
 async def on_ready(): 
     print("I'm in")
     print(bot.user) 
+	
+
+@bot.command()
+async def variance(ctx, *args):
+	await ctx.send(math.calculate_variance_population(i for i in args))
+	
+	
+
+		
+
+
+	
+	
+
 
 
 extensions = [
-	"cogs.cog_dev",
+	"cogs.cog_dev"
 ]
 
 if __name__ == '__main__':  
