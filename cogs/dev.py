@@ -5,6 +5,7 @@ Default cog example. Seems useful. I will keep for now.
 
 import discord
 from discord.ext import commands
+import lib.wilsonDB as wdb
 
 
 class DevCommands(commands.Cog, name='Developer Commands'):
@@ -74,6 +75,17 @@ class DevCommands(commands.Cog, name='Developer Commands'):
 		base_string += "\n".join([str(cog) for cog in self.bot.extensions])
 		base_string += "\n```"
 		await ctx.send(base_string)
+
+	@commands.command(name="get_datastream_count", aliases=["gdc"])
+	async def get_datastream_count(self, ctx):
+		"""
+		Returns the total datastream counts for this instance
+		"""
+		embed = discord.Embed(colour=discord.Colour.purple())
+		embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+		embed.set_field(name="Total Datastream count", value=wdb.Datastream.total_count, inline=False)
+		embed.set_field(name="Live Datastream count", value=wdb.Datastream.live_count, inline=False)
+		await ctx.send(embed=embed)
 
 
 def setup(bot):
