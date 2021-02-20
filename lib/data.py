@@ -1,7 +1,6 @@
 import json 
 import os 
 import main
-import wilsonDB as wdb
 
 class Dataset:
 	"""
@@ -9,7 +8,7 @@ class Dataset:
 	"""
 	pass
 
-
+# Reconsider idea for dataset. How will it work with Datastream and the database? Purpose? etc?
 
 
 	

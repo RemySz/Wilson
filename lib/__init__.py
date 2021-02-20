@@ -8,3 +8,21 @@ Todo list:
 - wilsonDB: basic database manager
 
 """
+import os
+
+class Path(object):
+	def __init__(self):
+		for item in os.scandir('..'):
+			if os.path.exists(item) and os.path.isdir(item) and item == "data":
+				self.data: str = "../data/"
+			else:
+				os.mkdir("../data/")
+				self.data: str = "../data/"
+			if os.path.exists(item) and os.path.isdir(item) and item == "cogs":
+				self.cogs: str = "../cogs/"
+			else:
+				os.mkdir("../cogs/")
+				self.cogs: str = "../cogs/"
+
+
+	

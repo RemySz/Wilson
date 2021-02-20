@@ -1,5 +1,7 @@
 import numpy
+from . import thread
 
+@thread.RunInUniqueThread
 def calculate_mean(use_dataset: bool = False, data: list = []):
 	if use_dataset:
 		pass
@@ -10,12 +12,14 @@ def calculate_mean(use_dataset: bool = False, data: list = []):
 	mean = sum_var/length
 	return {"mean":mean,"sum":sum_var,"length":length}
 
+@thread.RunInUniqueThread
 def calculate_median(use_dataset: bool = False, data: list = []):
 	data = numpy.sort(data)
 	length = len(data)
 	middle = length/2
 	return {"median":middle,"length":length}
 
+@thread.RunInUniqueThread
 def calculate_variance_population(use_dataset: bool = False, data: list = []):
 	if use_dataset:
 		pass # TODO
@@ -34,6 +38,7 @@ def calculate_variance_population(use_dataset: bool = False, data: list = []):
 		DEVIATION = numpy.sqrt(VAR_X)
 		return {"variance":VAR_X,'length':VAR_N,"mean":VAR_MEAN,"sum":VAR_SUM,"deviation":DEVIATION}
 
+@thread.RunInUniqueThread
 def calculate_variance_sample(use_dataset: bool = False, data: list = []):
 	if use_dataset:
 		pass # TODO

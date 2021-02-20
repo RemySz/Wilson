@@ -19,6 +19,7 @@ async def on_ready():
 extensions = [
 	"cogs.dev",
 	"cogs.math"
+	"cogs.brainfuck"
 ]
 
 if __name__ == '__main__':  
