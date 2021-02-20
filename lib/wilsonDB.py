@@ -1,15 +1,7 @@
 import sqlite3 as sql
 
-"""
-WilsonDB
-\
-\
-\
-Datastream:
-    Easy to use wrapper for manipulating and reading database/json files.
-"""
-
 class Datastream:
+    """Easy to use wrapper for manipulating and reading database files."""
     total_streams: int = 0
     live_streams: int = 0
     def __new__(cls):
