@@ -39,8 +39,6 @@ class Brainfuck(commands.Cogs, name="Brainfuck"):
         embed.add_field(name="Output", value=bf.output(), inline=False)
         await ctx.send(embed=embed)
 
-
-
     @brainfuck.command(
         name = "file",
         aliases = ['f'],
