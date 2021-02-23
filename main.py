@@ -17,9 +17,7 @@ async def on_ready():
     print(bot.user) 
 
 extensions = [
-	"cogs.dev",
-	"cogs.math"
-	"cogs.brainfuck"
+	"extentsions.login"
 ]
 
 if __name__ == '__main__':  
