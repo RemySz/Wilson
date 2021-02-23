@@ -2,6 +2,7 @@ import os
 import discord
 from keep_alive import keep_alive
 from discord.ext import commands
+from data.stream import DataStructure
 
 bot = commands.Bot(
 	command_prefix="::",  
@@ -11,15 +12,15 @@ bot = commands.Bot(
 bot.author_id = None # for now
 
 @bot.event 
-async def on_ready(): 
-    print("I'm in")
-    print(bot.user) 
+async def on_ready():
+	print("I'm in")
+	print(bot.user)
 
 extensions = [
 	"extensions.login"
 ]
 
-if __name__ == '__main__':  
+if __name__ == '__main__':
 	for extension in extensions:
 		bot.load_extension(extension)
 

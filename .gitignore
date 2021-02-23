@@ -1,8 +1,9 @@
 .env
 cog_example.py
 /pycache/*
+__pycache__/*
 /lib/pycache/*
-/data/pycache/*
+/data/__pycache__/*
 /cogs/output.txt
 /extensions/__pycache__/*
 /extensions/pycache/*

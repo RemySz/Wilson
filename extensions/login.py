@@ -1,28 +1,33 @@
 from discord.ext import commands
 import discord
-
-
-users = {
-	"users": {
-		"remy": {
-			"id": 739134752824754317,
-			"name": "Соковий демон#5619",
-			"access_level": 0,
-			"active_access_level": 0
-		}
-	}
-}
+from data.stream import DataStructure
+from data.stream import AccessLevel
 
 class Login(commands.Cog, name="Login"):
 	def __init__(self, bot):
 		self.bot = bot
+		self.struct = DataStructure()
 
 	@commands.group(pass_context=True, name="login")
 	async def login(self, ctx):
+		if self.struct.load(ctx.author.id, additional_path_info="./data/") == Exception:
+			print("Exception")
+			self.struct.user_id = ctx.author.id
+			self.struct.data = {
+				"name": ctx.author.name + '#' + ctx.author.discriminator, 
+				"id": ctx.author.id,
+				"access_level": 3,
+				"active_access_level": 3
+			}
+			print(self.struct.user_id)
+			self.struct.dump()
+		else:
+			self.struct.load(ctx.author.id)
+
 		if ctx.invoked_subcommand is None:
 			embed = discord.Embed(colour=discord.Colour.red())
 			embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-			embed.add_field(name="Error", value="Invoked subcommand was not found in command gorup context")
+			embed.add_field(name="Error", value="Invoked subcommand was not found in command group context")
 			await ctx.send(embed=embed)
 
 	@login.command(
@@ -31,27 +36,30 @@ class Login(commands.Cog, name="Login"):
 		aliases = ["admin"]
 	)
 	async def administrator(self, ctx):
-		for user, info in users["users"].items():
-			if ctx.author.id == info["id"] and info["access_level"] <= 1 and info["active_access_level"] != 1:
+		if ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Administrator and int(self.struct.data["active_access_level"]) != AccessLevel.Administrator:
+			public_embed = discord.Embed(colour=discord.Colour.purple())
+			public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			public_embed.add_field(name="Access granted", value="You are now an administrator", inline=False)
 
-				public_embed = discord.Embed(colour=discord.Colour.purple())
-				public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-				public_embed.add_field(name="Access granted", value="You are now an administrator", inline=False)
+			private_embed = discord.Embed(colour=discord.Colour.purple())
+			private_embed.set_author(name="Logged in as Administrator", icon_url=ctx.author.avatar_url)
+			commands_string = "use \"::admin --help\" to see a list of commands you have access to"
+			private_embed.add_field(name="Commands",value=commands_string, inline=False)
 
-				private_embed = discord.Embed(colour=discord.Colour.purple())
-				private_embed.set_author(name="Logged in as Administrator", icon_url=ctx.author.avatar_url)
-				commands_string = "use \"::admin --help\" to see a list of commands you have access to"
-				private_embed.add_field(name="Commands",value=commands_string, inline=False)
+			await ctx.send(embed=public_embed)
+			user = self.bot.get_user(ctx.author.id)
+			await user.send(embed=private_embed)
 
-				await ctx.send(embed=public_embed)
-				user = self.bot.get_user(ctx.author.id)
-				await user.send(embed=private_embed)
+			self.struct.data["active_access_level"] = AccessLevel.Administrator
+			print("yo")
+			self.struct.dump()
+			self.struct.clear()
 
-			elif ctx.author.id == info["id"] and info["access_level"] <= 1 and info["active_access_level"] == 1:
-
-				public_embed = discord.Embed(colour=discord.Colour.purple())
-				public_embed.set_author(name="You are already logged in as administrator", icon_url=ctx.author.avatar_url)
-				await ctx.send(embed=public_embed)
+		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Administrator and int(self.struct.data["active_access_level"]) == AccessLevel.Administrator:
+			print("in")
+			public_embed = discord.Embed(colour=discord.Colour.purple())
+			public_embed.set_author(name="You are already logged in as administrator", icon_url=ctx.author.avatar_url)
+			await ctx.send(embed=public_embed)
 			
 	@login.command(
 		pass_context=True,
@@ -59,27 +67,30 @@ class Login(commands.Cog, name="Login"):
 		aliases = ["dev"]
 	)
 	async def developer(self, ctx):
-		for user, info in users["users"].items():
-			if ctx.author.id == info["id"] and info["access_level"] <= 0 and info["active_access_level"] != 0:
+		if ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Developer and int(self.struct.data["active_access_level"]) != AccessLevel.Developer:
 
-				public_embed = discord.Embed(colour=discord.Colour.magenta())
-				public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-				public_embed.add_field(name="Access granted", value="You are now a developer", inline=False)
+			public_embed = discord.Embed(colour=discord.Colour.magenta())
+			public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			public_embed.add_field(name="Access granted", value="You are now a developer", inline=False)
 
-				private_embed = discord.Embed(colour=discord.Colour.magenta())
-				private_embed.set_author(name="Logged in as Developer", icon_url=ctx.author.avatar_url)
-				commands_string = "use \"::dev --help\" to see a list of commands you have access to"
-				private_embed.add_field(name="Commands",value=commands_string, inline=False)
+			private_embed = discord.Embed(colour=discord.Colour.magenta())
+			private_embed.set_author(name="Logged in as Developer", icon_url=ctx.author.avatar_url)
+			commands_string = "use \"::dev --help\" to see a list of commands you have access to"
+			private_embed.add_field(name="Commands",value=commands_string, inline=False)
 
-				await ctx.send(embed=public_embed)
-				user = self.bot.get_user(ctx.author.id)
-				await user.send(embed=private_embed)
+			await ctx.send(embed=public_embed)
+			user = self.bot.get_user(ctx.author.id)
+			await user.send(embed=private_embed)
 
-			elif ctx.author.id == info["id"] and info["access_level"] <= 0 and info["active_access_level"] == 0:
+			self.struct.data["active_access_level"] = AccessLevel.Developer
+			self.struct.dump()
+			self.struct.clear()
 
-				public_embed = discord.Embed(colour=discord.Colour.magenta())
-				public_embed.set_author(name="You are already logged in as developer", icon_url=ctx.author.avatar_url)
-				await ctx.send(embed=public_embed)
+		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Developer and int(self.struct.data["active_access_level"]) == AccessLevel.Developer:
+
+			public_embed = discord.Embed(colour=discord.Colour.magenta())
+			public_embed.set_author(name="You are already logged in as developer", icon_url=ctx.author.avatar_url)
+			await ctx.send(embed=public_embed)
 	
 	@login.command(
 		pass_context=True,
@@ -87,57 +98,67 @@ class Login(commands.Cog, name="Login"):
 		aliases = ["mod"]
 	)
 	async def moderator(self, ctx):
-		for user, info in users["users"].items():
-			if ctx.author.id == info["id"] and info["access_level"] <= 2 and info["active_access_level"] != 2:
+		if ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Moderator and int(self.struct.data["active_access_level"]) != AccessLevel.Moderator:
 
-				public_embed = discord.Embed(colour=discord.Colour.blue())
-				public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-				public_embed.add_field(name="Access granted", value="You are now a moderator", inline=False)
+			public_embed = discord.Embed(colour=discord.Colour.blue())
+			public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			public_embed.add_field(name="Access granted", value="You are now a moderator", inline=False)
 
-				private_embed = discord.Embed(colour=discord.Colour.blue())
-				private_embed.set_author(name="Logged in as Moderator", icon_url=ctx.author.avatar_url)
-				commands_string = "use \"::mod --help\" to see a list of commands you have access to"
-				private_embed.add_field(name="Commands",value=commands_string, inline=False)
+			private_embed = discord.Embed(colour=discord.Colour.blue())
+			private_embed.set_author(name="Logged in as Moderator", icon_url=ctx.author.avatar_url)
+			commands_string = "use \"::mod --help\" to see a list of commands you have access to"
+			private_embed.add_field(name="Commands",value=commands_string, inline=False)
 
-				await ctx.send(embed=public_embed)
-				user = self.bot.get_user(ctx.author.id)
-				await user.send(embed=private_embed)
+			await ctx.send(embed=public_embed)
+			user = self.bot.get_user(ctx.author.id)
+			await user.send(embed=private_embed)
 
-			elif ctx.author.id == info["id"] and info["access_level"] <= 2 and info["active_access_level"] == 2:
+			self.struct.data["active_access_level"] = AccessLevel.Moderator
+			self.struct.dump()
+			self.struct.clear()
 
-				public_embed = discord.Embed(colour=discord.Colour.blue())
-				public_embed.set_author(name="You are already logged in as moderator", icon_url=ctx.author.avatar_url)
-				await ctx.send(embed=public_embed)
+		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Moderator and int(self.struct.data["active_access_level"]) == AccessLevel.Moderator:
+
+			public_embed = discord.Embed(colour=discord.Colour.blue())
+			public_embed.set_author(name="You are already logged in as moderator", icon_url=ctx.author.avatar_url)
+			await ctx.send(embed=public_embed)
 
 	@login.command(
 		pass_context=True,
 		name = "member",
 	)
 	async def member(self, ctx):
-		for user, info in users["users"].items():
-			if ctx.author.id == info["id"] and info["access_level"] <= 3 and info["active_access_level"] != 3:
+		if ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Member and int(self.struct.data["active_access_level"]) != AccessLevel.Member:
+			public_embed = discord.Embed(colour=discord.Colour.teal())
+			public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			public_embed.add_field(name="Access granted", value="You are now a member", inline=False)
 
-				public_embed = discord.Embed(colour=discord.Colour.teal())
-				public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-				public_embed.add_field(name="Access granted", value="You are now a member", inline=False)
+			private_embed = discord.Embed(colour=discord.Colour.teal())
+			private_embed.set_author(name="Logged in as Member", icon_url=ctx.author.avatar_url)
+			commands_string = "use \"::help\" to see a list of commands you have access to"
+			private_embed.add_field(name="Commands",value=commands_string, inline=False)
 
-				private_embed = discord.Embed(colour=discord.Colour.teal())
-				private_embed.set_author(name="Logged in as Member", icon_url=ctx.author.avatar_url)
-				commands_string = "use \"::help\" to see a list of commands you have access to"
-				private_embed.add_field(name="Commands",value=commands_string, inline=False)
+			await ctx.send(embed=public_embed)
+			user = self.bot.get_user(ctx.author.id)
+			await user.send(embed=private_embed)
 
-				await ctx.send(embed=public_embed)
-				user = self.bot.get_user(ctx.author.id)
-				await user.send(embed=private_embed)
+			self.struct.data["active_access_level"] = AccessLevel.Member
+			self.struct.dump()
+			self.struct.clear()
 
-			elif ctx.author.id == info["id"] and info["access_level"] <= 3 and info["active_access_level"] == 3:
+		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Member and int(self.struct.data["active_access_level"]) == AccessLevel.Member:
 
-				public_embed = discord.Embed(colour=discord.Colour.teal())
-				public_embed.set_author(name="You are already logged in as member", icon_url=ctx.author.avatar_url)
-				await ctx.send(embed=public_embed)
+			public_embed = discord.Embed(colour=discord.Colour.teal())
+			public_embed.set_author(name="You are already logged in as member", icon_url=ctx.author.avatar_url)
+			await ctx.send(embed=public_embed)
+
+	@commands.command()
+	async def debug(self, ctx):
+		await ctx.send(f"data={self.struct.data}\nuser_id={self.struct.user_id}")
 
 
 def setup(bot):
-    bot.add_cog(Login(bot))		
+	bot.add_cog(Login(bot))
+
 
 
