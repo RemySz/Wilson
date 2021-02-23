@@ -17,6 +17,7 @@ async def on_ready():
     print(bot.user) 
 
 extensions = [
+	"extentsions.login"
 ]
 
 if __name__ == '__main__':  
