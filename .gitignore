@@ -4,3 +4,5 @@ cog_example.py
 /lib/pycache/*
 /data/pycache/*
 /cogs/output.txt
+/extensions/__pycache__/*
+/extensions/pycache/*
