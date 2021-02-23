@@ -1,6 +1,5 @@
 .env
 cog_example.py
-data/*
 /pycache/*
 /lib/pycache/*
 /data/pycache/*
