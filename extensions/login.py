@@ -152,9 +152,6 @@ class Login(commands.Cog, name="Login"):
 			public_embed.set_author(name="You are already logged in as member", icon_url=ctx.author.avatar_url)
 			await ctx.send(embed=public_embed)
 
-	@commands.command()
-	async def debug(self, ctx):
-		await ctx.send(f"data={self.struct.data}\nuser_id={self.struct.user_id}")
 
 
 def setup(bot):

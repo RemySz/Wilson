@@ -7,5 +7,8 @@ class Event(commands.Cog, name="Event"):
 
 
 
+def setup(bot):
+	bot.add_cogs(Event(bot))
+	
 def teardown(bot):
 	pass
