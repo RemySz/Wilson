@@ -1,0 +1,3 @@
+[submodule "lib/brainfuck"]
+	path = lib/brainfuck
+	url = https://github.com/RemySzpuuk/brainfuck.git

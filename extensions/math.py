@@ -11,5 +11,5 @@ class Calculate(commands.Cogs, name="Calculate"):
 
 
 def setup(bot):
-	bot.add_cog(Math(bot))
+  bot.add_cog(Math(bot))
 	bot.add_cog(Calculate(bot))

@@ -2,7 +2,7 @@ import os
 import discord
 from keep_alive import keep_alive
 from discord.ext import commands
-from extensions.__init__ import Settings
+from data.stream import DataStructure
 
 bot = commands.Bot(
 	command_prefix="::",  
@@ -23,7 +23,6 @@ extensions = [
 if __name__ == '__main__':
 	for extension in extensions:
 		bot.load_extension(extension)
-
 
 keep_alive()  
 token = os.environ.get("DISCORD_BOT_SECRET") 
