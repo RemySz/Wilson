@@ -39,6 +39,14 @@ class DataStructure:
 		except Exception as e: 
 			print(f"error {e}")
 
+	def delete(self, user_id, additional_path_info=""):
+    	try:
+			with open(f"{additional_path_info}/data{user_id}.txt", 'w') as file:
+				file.write()
+		except Exception:
+			return Exception
+
+
 	def clear(self):
 		self.data = {}
 		self.user_id = ""
