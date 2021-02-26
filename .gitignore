@@ -2,7 +2,7 @@
 cog_example.py
 /pycache/*
 __pycache__/*
-/lib/pycache/*
+/lib/__pycache__/*
 /data/__pycache__/*
 /cogs/output.txt
 /extensions/__pycache__/*
