@@ -1,95 +1,119 @@
 from discord.ext import commands
+from data.stream import DataStructure
 import discord
 
 class Dev(commands.Cog, name="Dev"):
 	def __init__(self, bot):
 		self.bot = bot
-
-	async def cog_check(self, ctx):  
-		'''
-		The default check for this cog whenever a command is used. Returns True if the command is allowed.
-		'''
-		return ctx.author.id == self.bot.author_id
+		self.stream = DataStructure()
+		self.access = False
 
 	@commands.group(
-		name="dev",
-		aliases=[],
-		pass_context = True
-	)
-	async def dev(self, ctx):
-		if ctx.invoked_subcommand is None:
-			embed = discord.Embed(colour=discord.Colour.red())
-			embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-			embed.add_field(name="Error", value="Your commend required a subcommand. None was provided.", inline=True)
-			await ctx.send(embed=embed)
-
-	@dev.group(
 		pass_context = True,
 		name="cog"
 	)
 	async def cog(self, ctx):
 		if ctx.invoked_subcommand is None:
-    			embed = discord.Embed(colour=discord.Colour.red())
-				embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-				embed.add_field(name="Error",value="Your command required a subcommand. None was provided.", inline=True)
+			embed = discord.Embed(colour=discord.Colour.red())
+			embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			embed.add_field(name="Error",value="Your command required a subcommand. None was provided.", inline=False)
+			await ctx.send(embed=embed)
+		else:
+			self.stream.load(ctx.author.id, "./data/user/")
+			print(self.stream.data)
+			if int(self.stream.data["active_access_level"]) == 0:
+				self.access = True
+			else:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
 				await ctx.send(embed=embed)
+				self.access = False
 
 
 	@cog.command(  
 		name='reload',  
 		aliases=['rl']  
 	)  
-	async def reload(self, ctx, cog):
+	async def reload(self, ctx, *cog):
 		'''
 		Reloads a cog.
 		'''
+		if not self.access: return
 		extensions = self.bot.extensions  
-		if cog == 'all':  
+		embed = discord.Embed(colour=discord.Colour.blurple())
+		embed.set_author(name="Reloaded extension(s)!", icon_url=ctx.author.avatar_url)
+
+		if 'all' in cog or '*' in cog:  
 			for extension in extensions:
 				self.bot.unload_extension(cog)
 				self.bot.load_extension(cog)
-			await ctx.send('Done')
-		if cog in extensions:
-			self.bot.unload_extension(cog) 
-			self.bot.load_extension(cog)  
-			await ctx.send('Done')  
+				embed.add_field(name=extension, value="was successfully unloaded!", inline=False)
+			await ctx.send(embed=embed) 
+
 		else:
-			await ctx.send('Unknown Cog')  
+			for item in cog:
+				if item in self.bot.extensions:
+					self.bot.unload_extension(cog) 
+					self.bot.load_extension(cog)  
+					embed.add_field(name=item, value="was successfully unloaded!", inline=False)
+				else:
+					embed.add_field(name=extension, value="does not exist!", inline=False)
+
+			await ctx.send(embed=embed) 
 	
 	@cog.command(name="unload", aliases=['ul']) 
-	async def unload(self, ctx, cog):
+	async def unload(self, ctx, *cog):
 		'''
 		Unload a cog.
 		'''
+		print(cog)
+		if not self.access: return
+		embed = discord.Embed(colour=discord.Colour.blurple())
+		embed.set_author(name="Unloaded extension(s)!", icon_url=ctx.author.avatar_url)
 		extensions = self.bot.extensions
-		if cog not in extensions:
-			await ctx.send("Cog is not loaded!")
-			return
-		self.bot.unload_extension(cog)
-		await ctx.send(f"`{cog}` has successfully been unloaded.")
+		for item in cog:
+			print(item)
+			if item not in extensions:
+				embed.add_field(name=cog, value="does not exist or is not currently loaded!", inline=False)
+			else:
+				try:
+					self.bot.unload_extension(cog)
+					embed.add_field(name=cog, value="was successfully unloaded!", inline=False)
+				except commands.errors.ExtensionNotLoaded:
+					embed.add_field(name=cog, value="Exception raised. Extension found in loaded extensions but is not loaded.", inline=False)
+		await ctx.send(embed=embed)
 	
 	@cog.command(name="load")
-	async def load(self, ctx, cog):
+	async def load(self, ctx, *cog):
 		'''
 		Loads a cog.
 		'''
-		try:
+		if not self.access: return
+		embed = discord.Embed(colour=discord.Colour.blurple())
+		embed.set_author(name="Loaded extension(s)!", icon_url=ctx.author.avatar_url)
+		for item in cog:
+			try:
+				self.bot.load_extension(item)
+				embed.add_field(name=item, value="was loaded!", inline=False)
 
-			self.bot.load_extension(cog)
-			await ctx.send(f"`{cog}` has successfully been loaded.")
-
-		except commands.errors.ExtensionNotFound:
-			await ctx.send(f"`{cog}` does not exist!")
+			except commands.errors.ExtensionNotFound:
+				embed.add_field(name=item, value="was not loaded!", inline=False)
+		await ctx.send(embed=embed)
 
 	@cog.command(name="listcogs", aliases=['lc'])
 	async def listcogs(self, ctx):
+		if not self.access: return
 		'''
 		Returns a list of all enabled commands.
 		'''
-		base_string = "```css\n"  
-		base_string += "\n".join([str(cog) for cog in self.bot.extensions])
-		base_string += "\n```"
-		await ctx.send(base_string)
+		embed = discord.Embed(colour=discord.Colour.blurple())
+		embed.set_author(name="Extensions(s)!", icon_url=ctx.author.avatar_url)
+		string: str = ""
+		for cog in self.bot.extensions:
+			string += cog
+			string += '\n'
+		embed.add_field(name="Extensions found:", value=string, inline=False)
+		await ctx.send(embed=embed)
 
 def setup(bot):
 	bot.add_cog(Dev(bot))

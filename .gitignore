@@ -7,3 +7,5 @@ __pycache__/*
 /cogs/output.txt
 /extensions/__pycache__/*
 /extensions/pycache/*
+/data/user/*
+/data/guild/*

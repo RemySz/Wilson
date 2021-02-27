@@ -10,7 +10,7 @@ class Login(commands.Cog, name="Login"):
 
 	@commands.group(pass_context=True, name="login")
 	async def login(self, ctx):
-		if self.struct.load(ctx.author.id, additional_path_info="./data/") == Exception:
+		if self.struct.load(ctx.author.id, additional_path_info="./data/user/") == Exception:
 			print("Exception")
 			self.struct.user_id = ctx.author.id
 			self.struct.data = {
@@ -22,7 +22,7 @@ class Login(commands.Cog, name="Login"):
 			print(self.struct.user_id)
 			self.struct.dump()
 		else:
-			self.struct.load(ctx.author.id)
+			self.struct.load(ctx.author.id, additional_path_info="./data/user/")
 
 		if ctx.invoked_subcommand is None:
 			embed = discord.Embed(colour=discord.Colour.red())
@@ -43,7 +43,7 @@ class Login(commands.Cog, name="Login"):
 
 			private_embed = discord.Embed(colour=discord.Colour.purple())
 			private_embed.set_author(name="Logged in as Administrator", icon_url=ctx.author.avatar_url)
-			commands_string = "use \"::admin --help\" to see a list of commands you have access to"
+			commands_string = "use \"::admin help\" to see a list of commands you have access to"
 			private_embed.add_field(name="Commands",value=commands_string, inline=False)
 
 			await ctx.send(embed=public_embed)
@@ -52,7 +52,7 @@ class Login(commands.Cog, name="Login"):
 
 			self.struct.data["active_access_level"] = AccessLevel.Administrator
 			print("yo")
-			self.struct.dump()
+			self.struct.dump(additional_path_info="./data/user/")
 			self.struct.clear()
 
 		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Administrator and int(self.struct.data["active_access_level"]) == AccessLevel.Administrator:
@@ -75,7 +75,7 @@ class Login(commands.Cog, name="Login"):
 
 			private_embed = discord.Embed(colour=discord.Colour.magenta())
 			private_embed.set_author(name="Logged in as Developer", icon_url=ctx.author.avatar_url)
-			commands_string = "use \"::dev --help\" to see a list of commands you have access to"
+			commands_string = "use \"::dev help\" to see a list of commands you have access to"
 			private_embed.add_field(name="Commands",value=commands_string, inline=False)
 
 			await ctx.send(embed=public_embed)
@@ -83,7 +83,7 @@ class Login(commands.Cog, name="Login"):
 			await user.send(embed=private_embed)
 
 			self.struct.data["active_access_level"] = AccessLevel.Developer
-			self.struct.dump()
+			self.struct.dump(additional_path_info="./data/user/")
 			self.struct.clear()
 
 		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Developer and int(self.struct.data["active_access_level"]) == AccessLevel.Developer:
@@ -106,7 +106,7 @@ class Login(commands.Cog, name="Login"):
 
 			private_embed = discord.Embed(colour=discord.Colour.blue())
 			private_embed.set_author(name="Logged in as Moderator", icon_url=ctx.author.avatar_url)
-			commands_string = "use \"::mod --help\" to see a list of commands you have access to"
+			commands_string = "use \"::mod help\" to see a list of commands you have access to"
 			private_embed.add_field(name="Commands",value=commands_string, inline=False)
 
 			await ctx.send(embed=public_embed)
@@ -114,7 +114,7 @@ class Login(commands.Cog, name="Login"):
 			await user.send(embed=private_embed)
 
 			self.struct.data["active_access_level"] = AccessLevel.Moderator
-			self.struct.dump()
+			self.struct.dump(additional_path_info="./data/user/")
 			self.struct.clear()
 
 		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Moderator and int(self.struct.data["active_access_level"]) == AccessLevel.Moderator:
@@ -143,7 +143,7 @@ class Login(commands.Cog, name="Login"):
 			await user.send(embed=private_embed)
 
 			self.struct.data["active_access_level"] = AccessLevel.Member
-			self.struct.dump()
+			self.struct.dump(additional_path_info="./data/user/")
 			self.struct.clear()
 
 		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Member and int(self.struct.data["active_access_level"]) == AccessLevel.Member:

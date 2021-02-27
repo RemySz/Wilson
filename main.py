@@ -1,8 +1,6 @@
 import os
-import discord
 from keep_alive import keep_alive
 from discord.ext import commands
-from data.stream import DataStructure
 
 bot = commands.Bot(
 	command_prefix="::",  
@@ -17,13 +15,16 @@ async def on_ready():
 	print(bot.user)
 
 extensions = [
-	"extensions.login"
+	"extensions.login",
+	"extensions.dev",
+	"extensions.poll",
 ]
 
 if __name__ == '__main__':
 	for extension in extensions:
 		bot.load_extension(extension)
+		print(f"Loaded {extension}")
 
 keep_alive()  
 token = os.environ.get("DISCORD_BOT_SECRET") 
-bot.run(token)  
+bot.run(token)   

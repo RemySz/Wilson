@@ -12,7 +12,7 @@ class DataStructure:
 
 	def load(self, user_id, additional_path_info=""):
 		try:
-			with open(f"{additional_path_info}/data{user_id}.txt", 'r') as file: #739134752824754317
+			with open(f"{additional_path_info}data{user_id}.txt", 'r') as file: #739134752824754317
 				info = file.readlines()
 
 				for item in info:
@@ -23,24 +23,24 @@ class DataStructure:
 
 				self.user_id = user_id
 				
-		except Exception:
-			return Exception
+		except Exception as e:
+			print(e)
 			
 
-	def dump(self):
+	def dump(self, additional_path_info=""):
 		try:
 			output: str = ""
 			print(self.data.items())
 			for item in self.data.items():
 				output += f"{item[0]}: {item[1]}\n"
-			with open(f"./data/data{self.user_id}.txt", 'w') as file:
+			with open(f"{additional_path_info}data{self.user_id}.txt", 'w') as file:
 				file.write(output)
 
 		except Exception as e: 
 			print(f"error {e}")
 
 	def delete(self, user_id, additional_path_info=""):
-    	try:
+		try:
 			with open(f"{additional_path_info}/data{user_id}.txt", 'w') as file:
 				file.write()
 		except Exception:
