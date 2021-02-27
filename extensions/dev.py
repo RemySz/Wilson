@@ -2,7 +2,7 @@ from discord.ext import commands
 from data.stream import DataStructure
 import discord
 
-class Dev(commands.Cog, name="Dev"):
+class Cog_commands(commands.Cog, name="Cog"):
 	def __init__(self, bot):
 		self.bot = bot
 		self.stream = DataStructure()
@@ -115,9 +115,69 @@ class Dev(commands.Cog, name="Dev"):
 		embed.add_field(name="Extensions found:", value=string, inline=False)
 		await ctx.send(embed=embed)
 
+class Dev(commands.Cog, name="Developer Commands"):
+	def __init__(self, bot):
+		self.bot = bot
+
+	@commands.group(
+		name="dev",
+		pass_context=True
+	)
+	async def dev(self, ctx):
+		"""
+		Run developer only commands.
+		"""
+		if ctx.invoked_subcommand is None:
+			pass
+
+	@commands.group(
+		name="console",
+		pass_context=True
+	)
+	async def console(self, ctx):
+		"""
+		Edit guild configs, user configs, bot configs, cog configs, recieve command errors, etc
+		"""
+		if ctx.invoked_subcommand is None:
+			pass
+
+class Admin(commands.Cog, name="Admin Commands"):
+	def __init__(self, bot):
+		self.bot = bot
+
+	@commands.group(
+		name="admin",
+		pass_context=True
+	)
+	async def admin(self, ctx):
+		"""
+		Run admin only commands.
+			Guild config, custom admin commands, etc
+		"""
+		if ctx.invoked_subcommand is None:
+			pass
+
+class Mod(commands.Cog, name="Mod Commands"):
+	def __init__(self, bot):
+		self.bot = bot
+
+	@commands.group(
+		name="mod",
+		pass_context=True
+	)
+	async def mod(self, ctx):
+		"""
+		Run mod only commands.
+			basic custom admin commands
+		"""
+		if ctx.invoked_subcommand is None:
+			pass
+
 def setup(bot):
 	bot.add_cog(Dev(bot))
+	bot.add_cog(Cog_commands(bot))
 
 def terminate(bot):
 	bot.remove_cog(Dev(bot))
+	bot.remove_cog(Cog_commands(bot))
 	
