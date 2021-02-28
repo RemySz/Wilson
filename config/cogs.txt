@@ -1,5 +1,5 @@
-extensions.login
-extensions.dev
-extensions.help
-extensions.poll
-extensions.rps
+cogs.login
+cogs.cogs
+cogs.help
+cogs.poll
+cogs.rps

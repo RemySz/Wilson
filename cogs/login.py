@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
 from data.stream import DataStructure
-from __init__ import AccessLevel
+from cogs.__init__ import AccessLevel
 
 class Login(commands.Cog, name="Login"):
 	def __init__(self, bot):

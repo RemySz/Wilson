@@ -25,7 +25,7 @@ class Console(commands.Cog, name="console"):
 			await ctx.send(embed=embed)
 
 		elif self.stream.load(ctx.author.id, "./data/user/") != Exception:
-			if not (self.stream.data["active_access_level"] <= 2):
+			if not (int(self.stream.data["active_access_level"]) <= 2):
 				embed = discord.Embed(colour=discord.Colour.red())
 				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
 				await ctx.send(embed=embed)
@@ -53,21 +53,7 @@ class Console(commands.Cog, name="console"):
 			string += f"{config} could not be found.\n"
 			string += "```"
 		await ctx.send(string)
-			
-	
-	@config.command()
-	async def list_configs(self, ctx):
-		configs = os.scandir("./config/")
-		embed = discord.Embed(colour=discord.Colour.green())
-		embed.set_author(name="Global configs")
-		string = ""
-		for config in configs:
-			config = config.replace(".txt",'').replace("\n", '')
-			string += config
-			string += "\n"
-		embed.add_field(name="Configs found", value=string, inline=False)
-		embed.add_field(name="Num of configs", value=len(configs), inline=False)
-		await ctx.send(embed=embed)
+		
 
 
 def setup(bot):
