@@ -1,8 +1,4 @@
-class AccessLevel(object):
-	Developer = 0
-	Administrator = 1
-	Moderator = 2
-	Member = 3
+
 
 class DataStructure:
 
@@ -25,6 +21,7 @@ class DataStructure:
 				
 		except Exception as e:
 			print(e)
+			return Exception
 			
 
 	def dump(self, additional_path_info=""):

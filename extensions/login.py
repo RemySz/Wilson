@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
 from data.stream import DataStructure
-from data.stream import AccessLevel
+from __init__ import AccessLevel
 
 class Login(commands.Cog, name="Login"):
 	def __init__(self, bot):
@@ -16,8 +16,8 @@ class Login(commands.Cog, name="Login"):
 			self.struct.data = {
 				"name": ctx.author.name + '#' + ctx.author.discriminator, 
 				"id": ctx.author.id,
-				"access_level": 3,
-				"active_access_level": 3
+				"access_level": AccessLevel.Member,
+				"active_access_level": AccessLevel.Member
 			}
 			print(self.struct.user_id)
 			self.struct.dump()
@@ -29,37 +29,6 @@ class Login(commands.Cog, name="Login"):
 			embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
 			embed.add_field(name="Error", value="Invoked subcommand was not found in command group context")
 			await ctx.send(embed=embed)
-
-	@login.command(
-		pass_context=True,
-		name = "administrator",
-		aliases = ["admin"]
-	)
-	async def administrator(self, ctx):
-		if ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Administrator and int(self.struct.data["active_access_level"]) != AccessLevel.Administrator:
-			public_embed = discord.Embed(colour=discord.Colour.purple())
-			public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-			public_embed.add_field(name="Access granted", value="You are now an administrator", inline=False)
-
-			private_embed = discord.Embed(colour=discord.Colour.purple())
-			private_embed.set_author(name="Logged in as Administrator", icon_url=ctx.author.avatar_url)
-			commands_string = "use \"::admin help\" to see a list of commands you have access to"
-			private_embed.add_field(name="Commands",value=commands_string, inline=False)
-
-			await ctx.send(embed=public_embed)
-			user = self.bot.get_user(ctx.author.id)
-			await user.send(embed=private_embed)
-
-			self.struct.data["active_access_level"] = AccessLevel.Administrator
-			print("yo")
-			self.struct.dump(additional_path_info="./data/user/")
-			self.struct.clear()
-
-		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Administrator and int(self.struct.data["active_access_level"]) == AccessLevel.Administrator:
-			print("in")
-			public_embed = discord.Embed(colour=discord.Colour.purple())
-			public_embed.set_author(name="You are already logged in as administrator", icon_url=ctx.author.avatar_url)
-			await ctx.send(embed=public_embed)
 			
 	@login.command(
 		pass_context=True,
@@ -90,6 +59,67 @@ class Login(commands.Cog, name="Login"):
 
 			public_embed = discord.Embed(colour=discord.Colour.magenta())
 			public_embed.set_author(name="You are already logged in as developer", icon_url=ctx.author.avatar_url)
+			await ctx.send(embed=public_embed)
+
+	@login.command(
+		pass_context=True,
+		name = "owner",
+	)
+	async def owner(self, ctx):
+		if ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Owner and int(self.struct.data["active_access_level"]) != AccessLevel.Owner:
+			public_embed = discord.Embed(colour=discord.Colour.purple())
+			public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			public_embed.add_field(name="Access granted", value="You are now an owner", inline=False)
+
+			private_embed = discord.Embed(colour=discord.Colour.purple())
+			private_embed.set_author(name="Logged in as Owner", icon_url=ctx.author.avatar_url)
+			commands_string = "use \"::owner help\" to see a list of commands you have access to"
+			private_embed.add_field(name="Commands",value=commands_string, inline=False)
+
+			await ctx.send(embed=public_embed)
+			user = self.bot.get_user(ctx.author.id)
+			await user.send(embed=private_embed)
+
+			self.struct.data["active_access_level"] = AccessLevel.Owner
+			print("yo")
+			self.struct.dump(additional_path_info="./data/user/")
+			self.struct.clear()
+
+		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Owner and int(self.struct.data["active_access_level"]) == AccessLevel.Owner:
+			print("in")
+			public_embed = discord.Embed(colour=discord.Colour.purple())
+			public_embed.set_author(name="You are already logged in as owner", icon_url=ctx.author.avatar_url)
+			await ctx.send(embed=public_embed)
+
+	@login.command(
+		pass_context=True,
+		name = "administrator",
+		aliases = ["admin"]
+	)
+	async def administrator(self, ctx):
+		if ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Administrator and int(self.struct.data["active_access_level"]) != AccessLevel.Administrator:
+			public_embed = discord.Embed(colour=discord.Colour.purple())
+			public_embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+			public_embed.add_field(name="Access granted", value="You are now an administrator", inline=False)
+
+			private_embed = discord.Embed(colour=discord.Colour.purple())
+			private_embed.set_author(name="Logged in as Administrator", icon_url=ctx.author.avatar_url)
+			commands_string = "use \"::admin help\" to see a list of commands you have access to"
+			private_embed.add_field(name="Commands",value=commands_string, inline=False)
+
+			await ctx.send(embed=public_embed)
+			user = self.bot.get_user(ctx.author.id)
+			await user.send(embed=private_embed)
+
+			self.struct.data["active_access_level"] = AccessLevel.Administrator
+			print("yo")
+			self.struct.dump(additional_path_info="./data/user/")
+			self.struct.clear()
+
+		elif ctx.author.id == int(self.struct.data["id"]) and int(self.struct.data["access_level"]) <= AccessLevel.Administrator and int(self.struct.data["active_access_level"]) == AccessLevel.Administrator:
+			print("in")
+			public_embed = discord.Embed(colour=discord.Colour.purple())
+			public_embed.set_author(name="You are already logged in as administrator", icon_url=ctx.author.avatar_url)
 			await ctx.send(embed=public_embed)
 	
 	@login.command(

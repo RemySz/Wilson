@@ -1,0 +1,5 @@
+extensions.login
+extensions.dev
+extensions.help
+extensions.poll
+extensions.rps

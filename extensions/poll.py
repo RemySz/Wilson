@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Voting system
-"""
+
 import discord 
 from discord.ext import commands
 
