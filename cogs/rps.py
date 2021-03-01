@@ -1,9 +1,11 @@
 import discord 
 from discord.ext import commands
+import random as r
 
 class RockPaperScissors(commands.Cog, name="Rock Paper Scissors"):
 	def __init__(self, bot):
 		self.bot = bot
+		self.raw_emojis = ["rock","paper","scissors"]
 		self.emojis = ["🪨","📄","✂️","❌"]
 				
 	@commands.group(pass_context = True, name="Rock Paper Scissors", aliases=["rps"])
@@ -15,40 +17,52 @@ class RockPaperScissors(commands.Cog, name="Rock Paper Scissors"):
 				name = "Failed to invoke subcommand", 
 				value="The command you used requires the subcommand 'challenge'"
 				)
-				
-	@rock_paper_scissor.command(
-		pass_context = True,
-		aliases=["fight"],
-		name="challenge"
-	)
-	async def challenge(self, ctx, user):
-		challenger = self.bot.get_user(ctx.author.id)
-		reciever = self.bot.get_user(user)
-		embed = discord.Embed(colour=discord.Colour.yellow())
-		embed.set_author(name="Rock! Paper! Scissors!", icon_url=ctx.author.avatar_url)
-		embed.add_field(
-			name=f"{ctx.author.name} challenged you to rock paper scissors!",
-			value="Respond with 'rock', 'paper' or 'scissors'! You can also submit 'decline' to decline the match."
-		)
-		embed.add_field(
-			name="How do I respond?",
-			value="Click on the emoji which you want your answer to be. If you don't want to respond click on the red X."
-		)
-		_embed = discord.Embed(colour=discord.Colour.purple())
-		_embed.set_author(name="Rock! Paper! Scissors!", icon_url=ctx.author.avatar_url)
-		_embed.add_field(
-			name=f"You challenged {reciever.name} to rock paper scissors!",
-			value="Respond with 'rock', 'paper' or 'scissors'! You can also submit 'decline' to decline the match."
-		)
-		_embed.add_field(
-			name="How do I respond?",
-			value="Click on the emoji which you want your answer to be. If you don't want to respond click on the red X."
-		)
-		msg = await challenger.send(embed=_embed)
-		_msg = await reciever.send(embed=embed)
-		for emoji in self.emojis:
-			await msg.add_reaction(emoji)
-			await _msg.add_reaction(emoji)
+			await ctx.send(embed=error)
+	
+	@rock_paper_scissor.command()
+	async def wilson(self, ctx, user_choice):
+		user_choice = user_choice.lower()
+		bot_choice = r.choice(self.raw_emojis)
+		embed = discord.Embed(colour=discord.Colour.blue())
+		result: int
+		if user_choice in self.raw_emojis:
+			if user_choice == bot_choice:
+				result = 2
+
+			if user_choice == "rock":
+				if bot_choice == "paper":
+					result = 1
+				elif bot_choice == "scissors":
+					result = 3
+
+			elif user_choice == "paper":
+				if bot_choice == "rock":
+					result = 1
+				elif bot_choice == "scissors":
+					result = 3
+
+			elif user_choice == "scissors":
+				if bot_choice == "rock":
+					result = 1
+				elif bot_choice == "paper":
+					result = 3
+			else:
+				embed.set_author(name=f"{user_choice} is not an option!", icon_url=ctx.author.avatar_url)
+		
+		if result == 2:
+			embed.set_author(name="It's a DRAW!", icon_url=ctx.author.avatar_url)
+			embed.add_field(name=f"{ctx.author.name} played {user_choice}!", value=f"This caused {ctx.author.name} to draw with Wilson.", inline=False)
+			embed.add_field(name=f"Wilson played {bot_choice}!", value=f"This caused Wilson to draw with {ctx.author.name}.", inline=False)
+		elif result == 1:
+			embed.set_author(name=f"{ctx.author.name} lost!", icon_url=ctx.author.avatar_url)
+			embed.add_field(name=f"{ctx.author.name} played {user_choice}!", value=f"This caused {ctx.author.name} to lose against Wilson.", inline=False)
+			embed.add_field(name=f"Wilson played {bot_choice}!", value=f"This caused Wilson to win against {ctx.author.name}.", inline=False)
+		elif result == 3:
+			embed.set_author(name=f"{ctx.author.name} won!", icon_url=ctx.author.avatar_url)
+			embed.add_field(name=f"{ctx.author.name} played {user_choice}!", value=f"This caused {ctx.author.name} to win against Wilson.", inline=False)
+			embed.add_field(name=f"Wilson played {bot_choice}!", value=f"This caused Wilson to lose against {ctx.author.name}.", inline=False)
+		await ctx.send(embed=embed)
+
 
 def setup(bot):
 	bot.add_cog(RockPaperScissors(bot))

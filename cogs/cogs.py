@@ -80,9 +80,11 @@ class Cog_commands(commands.Cog, name="Cog"):
 		Returns a list of all enabled commands.
 		'''
 		if not self.access: return
-		string = ""
+		string = "```php\n"
 		for cog in self.bot.extensions:
-			string += str(cog)
+			string += f"${cog}"
+			string += '\n'
+		string += "```"
 		await ctx.send(string)
 
 

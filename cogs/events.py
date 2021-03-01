@@ -22,14 +22,23 @@ class Event(commands.Cog, name="Events"):
 		stream.dump()
 		del stream
 
-#	@commands.Cog.listener()
-#	async def on_member_remove(self, member):
-#		embed = discord.Embed(colour=discord.Colour.gold())
-#		embed.set_author(name="Goodbye & Good luck!", icon_url=member.avatar_url)
-#		await member.send(embed=embed)
-#		stream = DataStructure()
-#		stream.delete()
-#		del stream
+	@commands.Cog.listener()
+	async def on_message(self, message: discord.Member):
+		if message.author.name == self.bot.user.name:
+			return 
+    # do some extra stuff here
+		if "--remove" in message.content:
+			await message.delete()
+			# remove message
+			
+		elif "--say" in message.content:
+			await message.channel.send(message.content.replace("--say",''))
+			# make wilson say message contents
+
+		#elif "--quote" in message.content or "--q" in message.content:
+			#await message.channel.send(f"\"{message.content.replace("--quote",'')}\" - {message.author.name}")
+
+		await self.bot.process_commands(message)
 	
 	@commands.Cog.listener()
 	async def on_guild_join(self, ctx):
@@ -39,9 +48,7 @@ class Event(commands.Cog, name="Events"):
 		"""
 		pass
 	
-	@commands.Cog.listener()
-	async def on_guild_remove(self, ctx):
-		pass
+
 
 
 

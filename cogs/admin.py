@@ -30,6 +30,35 @@ class Admin(commands.Cog, name="Admin Commands"):
 				await ctx.send(embed=embed)
 				self.access = False
 		
+	@admin.command()
+	async def kick(self, ctx, member: discord.Member, reason=""):
+		try:
+			await member.kick(reason=reason)
+		except Exception:
+			await ctx.send("Couldn't find user!")
+
+	@admin.command()
+	async def ban(self, ctx, member: discord.Member, reason=""):
+		try:
+			await member.ban(reason=reason)
+		except Exception:
+			await ctx.send("Couldn't find user!")
+	
+	@admin.command()
+	async def mass_kick(self, ctx, *members: discord.Member):
+		for member in members:
+			member.kick()
+	
+	@admin.command()
+	async def mass_ban(self, ctx, *members: discord.Member):
+		for member in members:
+			member.kick()
+
+	@admin.command()
+	async def mute(self, ctx, member: discord.Member):
+		# Add role which removes permissiosn to talk in channels
+		pass
+		
 
 def setup(bot):
 	bot.add_cog(Admin(bot))

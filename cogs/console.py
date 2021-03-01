@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
 from data.stream import DataStructure
-import os
 
 class Console(commands.Cog, name="console"):
 	def __init__(self, bot):

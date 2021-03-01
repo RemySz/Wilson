@@ -27,19 +27,16 @@ class Dev(commands.Cog, name="Developer Commands"):
 				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
 				await ctx.send(embed=embed)
 				self.access = False
+
+	@dev.command()
+	async def load(self, ctx, extension):
+		with open("./config/cogs.txt",'a') as f:
+			f.write(f"\n{extension}")
+			self.bot.load_extension("cogs." + extension)
+			embed = discord.Embed(colour=discord.Colour.purple())
+			embed.set_author(name=f"{extension} was loaded!", icon_url=ctx.author.avatar_url)
+			await ctx.send(embed=embed)
 	
-	@dev.command(
-		pass_context = True,
-		name = "list",
-		alisases=["list"]
-	) 
-	async def list_extensions(self, ctx):
-		string = "```css\n"
-		files = os.scandir("./cogs/")
-		string += "Cogs found:\n"
-		string += files
-		string += "\n```"
-		await ctx.send(string)
 
 def setup(bot):
 	bot.add_cog(Dev(bot))
