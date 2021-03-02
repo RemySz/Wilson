@@ -44,17 +44,61 @@ class Dev(commands.Cog, name="Developer Commands"):
 	async def load(self, ctx, extension):
 		if int(self.stream.data["active_access_level"]) == AccessLevel.Developer:
 
-			with open("./config/cogs.txt",'a') as f:
-				f.write(f"\n{extension}")
-				self.bot.load_extension("cogs." + extension)
-				embed = discord.Embed(colour=discord.Colour.purple())
-				embed.set_author(name=f"{extension} was loaded!", icon_url=ctx.author.avatar_url)
-				await ctx.send(embed=embed)
-			self.stream.clear()
+			try:
+				with open("./config/cogs.txt",'a') as f:
+					f.write(f"cogs.{extension}\n")
+					self.bot.load_extension("cogs." + extension)
+					embed = discord.Embed(colour=discord.Colour.purple())
+					embed.set_author(name=f"{extension} was loaded!", icon_url=ctx.author.avatar_url)
+					embed.add_field(
+						name=f"Succesfully loaded {extension}!",
+						value="Extension was loaded with success. This will now load upon restart automatically and be stored in config.cogs.", 
+						inline=False
+					)
+				self.stream.clear()
+
+			except Exception as e:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name=f"Error while unloading {extension}", icon_url=ctx.author.avatar_url)
+				embed.add_field(name="Error!", value=str(e), inline=False)
 		
 		else:
 				embed = discord.Embed(colour=discord.Colour.red())
 				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
+		
+		await ctx.send(embed=embed)
+
+	@dev.command()
+	async def unload(self, ctx, extension):
+		if int(self.stream.data["active_access_level"]) == AccessLevel.Developer:
+			
+			embed = discord.Embed(colour=discord.Colour.blurple())
+			embed.set_author(name=f"Unloaded {extension}", icon_url=ctx.author.avatar_url)
+			embed.add_field(
+				name=f"Succesfully unloaded {extension}!",
+				value="Extension was unloaded with success. Extension has been removed from config.cogs and will not long automatically boot on restart.", 
+				inline=False
+			)
+
+			with open("./config/cogs.txt", 'r') as f:
+				contents = f.readlines()
+
+				try:
+					self.bot.unload_extension("cogs." + extension)
+					contents.remove("cogs."+extension+"\n")
+					with open("./config/cogs.txt",'w') as f:
+						f.writelines(contents)
+				except Exception as e:
+					del embed
+					embed = discord.Embed(colour=discord.Colour.red())
+					embed.set_author(name=f"Error while unloading {extension}", icon_url=ctx.author.avatar_url)
+					embed.add_field(name="Error!", value=str(e), inline=False)
+			
+		else:
+			embed = discord.Embed(colour=discord.Colour.red())
+			embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
+
+		await ctx.send(embed=embed)
 
 	@dev.command()
 	async def log(self, ctx, user_id):

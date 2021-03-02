@@ -28,7 +28,7 @@ if __name__ == '__main__':
 		bot.load_extension(extension)
 		i += 1
 		print(f"Loaded {extension}: Total cogs loaded: {i}")
-
+	del i
 	print("Loaded all cogs in config")
 
 keep_alive()  

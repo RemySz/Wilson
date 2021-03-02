@@ -19,3 +19,5 @@ list_of_cogs = [
 	"poll",
 	"rps"
 ]
+
+
