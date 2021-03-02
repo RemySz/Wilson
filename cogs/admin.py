@@ -5,7 +5,6 @@ from data.stream import DataStructure
 class Admin(commands.Cog, name="Admin Commands"):
 	def __init__(self, bot):
 		self.bot = bot
-		self.access
 		self.stream = DataStructure()
 
 	@commands.group(
@@ -28,7 +27,7 @@ class Admin(commands.Cog, name="Admin Commands"):
 				embed = discord.Embed(colour=discord.Colour.red())
 				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
 				await ctx.send(embed=embed)
-				self.access = False
+				return
 		
 	@admin.command()
 	async def kick(self, ctx, member: discord.Member, reason=""):

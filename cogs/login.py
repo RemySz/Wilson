@@ -20,7 +20,7 @@ class Login(commands.Cog, name="Login"):
 				"active_access_level": AccessLevel.Member
 			}
 			print(self.struct.user_id)
-			self.struct.dump()
+			self.struct.dump(additional_path_info="./data/user/")
 		else:
 			self.struct.load(ctx.author.id, additional_path_info="./data/user/")
 
@@ -81,7 +81,6 @@ class Login(commands.Cog, name="Login"):
 			await user.send(embed=private_embed)
 
 			self.struct.data["active_access_level"] = AccessLevel.Owner
-			print("yo")
 			self.struct.dump(additional_path_info="./data/user/")
 			self.struct.clear()
 

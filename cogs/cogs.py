@@ -1,12 +1,13 @@
 from discord.ext import commands
 from data.stream import DataStructure
+from .__init__ import AccessLevel
+import cogs.__init__ as cc
 import discord
 
 class Cog_commands(commands.Cog, name="Cog"):
 	def __init__(self, bot):
 		self.bot = bot
 		self.stream = DataStructure()
-		self.access = False
 
 	@commands.group(
 		pass_context = True,
@@ -20,13 +21,12 @@ class Cog_commands(commands.Cog, name="Cog"):
 			await ctx.send(embed=embed)
 		else:
 			self.stream.load(ctx.author.id, "./data/user/")
-			if int(self.stream.data["active_access_level"]) == 0:
-				self.access = True
+			if int(self.stream.data["active_access_level"]) == AccessLevel.Developer:
+				pass
 			else:
 				embed = discord.Embed(colour=discord.Colour.red())
 				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
 				await ctx.send(embed=embed)
-				self.access = False
 
 
 	@cog.command(  
@@ -37,13 +37,23 @@ class Cog_commands(commands.Cog, name="Cog"):
 		'''
 		Reloads a cog.
 		'''
-		if not self.access: return
-		try:
-			self.bot.unload_extension(f"cogs.{cog}")
-			self.bot.load_extension(f"cogs.{cog}")
-			await ctx.send(f"Reloaded {cog}")
-		except Exception as e:
-			await ctx.send(e)
+		if int(self.stream.data["active_access_level"]) == AccessLevel.Developer:
+			if not self.access: return
+			try:
+				self.bot.unload_extension(f"cogs.{cog}")
+				self.bot.load_extension(f"cogs.{cog}")
+				embed = discord.Embed(colour=discord.Colour.green())
+				embed.set_author(name=f"Reloaded {cog}", icon_url=ctx.author.avatar_url)
+			except Exception as e:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name=f"Attempt a reloading {cog} cause the following error", icon_url=ctx.author.avatar_url)
+				embed.add_field(name="Error", value=str(e))
+		
+		else:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
+		
+		await ctx.send(embed=embed)
 
 		 
 	
@@ -52,12 +62,21 @@ class Cog_commands(commands.Cog, name="Cog"):
 		'''
 		Unload a cog.
 		'''
-		if not self.access: return
-		try:
-			self.bot.unload_extension(f"cogs.{cog}")
-			await ctx.send(f"{cog} was unloaded")
-		except Exception as e:
-			await ctx.send(e)
+		if int(self.stream.data["active_access_level"]) == AccessLevel.Developer:
+			try:
+				self.bot.unload_extension(f"cogs.{cog}")
+				embed = discord.Embed(colour=discord.Colour.green())
+				embed.set_author(name=f"Unloaded {cog}", icon_url=ctx.author.avatar_url)
+			except Exception as e:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name=f"Attempt a reloading {cog} cause the following error", icon_url=ctx.author.avatar_url)
+				embed.add_field(name="Error", value=str(e))
+		
+		else:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
+		
+		await ctx.send(embed=embed)
 		
 	
 	@cog.command(name="load")
@@ -65,12 +84,21 @@ class Cog_commands(commands.Cog, name="Cog"):
 		'''
 		Loads a cog.
 		'''
-		if not self.access: return
-		try:
-			self.bot.load_extension(f"cogs.{cog}")
-			await ctx.send(f"{cog} was loaded!")
-		except Exception as e:
-			await ctx.send(e)
+		if int(self.stream.data["active_access_level"]) == AccessLevel.Developer:
+			try:
+				self.bot.load_extension(f"cogs.{cog}")
+				embed = discord.Embed(colour=discord.Colour.green())
+				embed.set_author(name=f"Loaded {cog}", icon_url=ctx.author.avatar_url)
+			except Exception as e:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name=f"Attempt a reloading {cog} cause the following error", icon_url=ctx.author.avatar_url)
+				embed.add_field(name="Error", value=str(e))
+
+		else:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
+		
+		await ctx.send(embed=embed)
 
 		
 
@@ -79,13 +107,26 @@ class Cog_commands(commands.Cog, name="Cog"):
 		'''
 		Returns a list of all enabled commands.
 		'''
-		if not self.access: return
-		string = "```php\n"
-		for cog in self.bot.extensions:
-			string += f"${cog}"
-			string += '\n'
-		string += "```"
-		await ctx.send(string)
+		if int(self.stream.data["active_access_level"]) == AccessLevel.Developer:
+			embed = discord.Embed(colour=discord.Colour.green())
+			embed.set_author(name="List of Cogs", icon_url=ctx.author.avatar_url)
+			string = ""
+			for cog in self.bot.extensions:
+				string += f"${cog}"
+				string += '\n'
+			embed.add_field(name="Loaded Cogs", value=string)
+			with open("./config/cogs.txt",'r') as f:
+				embed.add_field(name="Cogs in config", value=f.read())
+			string = ""
+			for cog in cc.list_of_cogs:
+				string += str(cog) + "\n"
+			embed.add_field(name="All cogs", value=string)
+		
+		else:
+				embed = discord.Embed(colour=discord.Colour.red())
+				embed.set_author(name="Authentification failed!", icon_url=ctx.author.avatar_url)
+		
+		await ctx.send(embed=embed)
 
 
 

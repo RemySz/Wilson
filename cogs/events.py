@@ -38,7 +38,7 @@ class Event(commands.Cog, name="Events"):
 		#elif "--quote" in message.content or "--q" in message.content:
 			#await message.channel.send(f"\"{message.content.replace("--quote",'')}\" - {message.author.name}")
 
-		await self.bot.process_commands(message)
+		#await self.bot.process_commands(message)
 	
 	@commands.Cog.listener()
 	async def on_guild_join(self, ctx):

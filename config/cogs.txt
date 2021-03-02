@@ -1,5 +1,3 @@
 cogs.login
+cogs.dev
 cogs.cogs
-cogs.help
-cogs.poll
-cogs.rps

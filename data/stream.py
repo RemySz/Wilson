@@ -6,9 +6,17 @@ class DataStructure:
 		self.data = {}
 		self.user_id: int
 
+	def check_access_level(self, access_level):
+		if self.data["access_level"] <= access_level:
+			return True
+		else:
+			return False
+
+
+
 	def load(self, user_id, additional_path_info=""):
 		try:
-			with open(f"{additional_path_info}data{user_id}.txt", 'r') as file: #739134752824754317
+			with open(f"{additional_path_info}data{user_id}.txt", 'r') as file: 
 				info = file.readlines()
 
 				for item in info:

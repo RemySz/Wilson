@@ -16,16 +16,20 @@ async def on_ready():
 
 try:
 	with open("./config/cogs.txt",'r') as f:
-		cogs = f.readlines()
+		cogs_config = f.readlines()
 except Exception as e:
 	raise e
 
-extensions = [line.replace('\n','') for line in cogs]
+extensions = [line.replace('\n','') for line in cogs_config]
 
 if __name__ == '__main__':
+	i = 0
 	for extension in extensions:
 		bot.load_extension(extension)
-		print(f"Loaded {extension}")
+		i += 1
+		print(f"Loaded {extension}: Total cogs loaded: {i}")
+
+	print("Loaded all cogs in config")
 
 keep_alive()  
 token = os.environ.get("DISCORD_BOT_SECRET") 
