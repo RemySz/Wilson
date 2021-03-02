@@ -11,7 +11,8 @@ class Cog_commands(commands.Cog, name="Cog"):
 
 	@commands.group(
 		pass_context = True,
-		name="cog"
+		name="cog",
+		aliases=["cogs"]
 	)
 	async def cog(self, ctx):
 		if ctx.invoked_subcommand is None:
@@ -38,7 +39,6 @@ class Cog_commands(commands.Cog, name="Cog"):
 		Reloads a cog.
 		'''
 		if int(self.stream.data["active_access_level"]) == AccessLevel.Developer:
-			if not self.access: return
 			try:
 				self.bot.unload_extension(f"cogs.{cog}")
 				self.bot.load_extension(f"cogs.{cog}")
