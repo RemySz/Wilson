@@ -6,7 +6,10 @@ import requests
 def request_information(word, language) -> dict:
     url = f"https://api.dictionaryapi.dev/api/v2/entries/{language}/{word.lower()}"
     data = requests.get(url)
-    data = json.dumps(data.json())
+    with open("temp.json", 'w') as f:
+        json.dump(data.json(),fp=f)
+    with open("temp.json", 'r') as f:
+        data = json.load(f.read())
     return data
     
 def format_information(data) -> dict:
