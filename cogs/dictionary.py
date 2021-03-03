@@ -23,7 +23,7 @@ class Dictionary(commands.Cog, name="Dictionary commands"):
         self.bot = bot
 
     @commands.command()
-    async def define(self, ctx: discord.Context, word):
+    async def define(self, ctx, word):
         # Request data
         data = request_information(word, "en_GB")
         # Search/find/re-format data
