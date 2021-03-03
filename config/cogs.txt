@@ -1,3 +1,4 @@
 cogs.login
 cogs.dev
 cogs.cogs
+cogs.dictionary
