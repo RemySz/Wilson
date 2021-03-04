@@ -1,6 +1,7 @@
 import os
 from keep_alive import keep_alive
 from discord.ext import commands
+import os
 
 bot = commands.Bot(
 	command_prefix="::",  
@@ -34,3 +35,8 @@ if __name__ == '__main__':
 keep_alive()  
 token = os.environ.get("DISCORD_BOT_SECRET") 
 bot.run(token)   
+try:
+	os.remove("./__pycache__")
+	os.remove("./data/__pycache__")
+	os.remove("./cogs/__pycahce__")
+except: pass
