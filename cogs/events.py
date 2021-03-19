@@ -27,13 +27,29 @@ class Event(commands.Cog, name="Events"):
 		if message.author.name == self.bot.user.name:
 			return 
     # do some extra stuff here
+			
+		if "--say" in message.content:
+			await message.channel.send(message.content.replace("--say",'').replace("--cum",'').replace("--remove",''))
+			# make wilson say message contents
+		
+		if "--cum" in message.content: 
+			output = ""
+			i = 0
+			string = message.content.replace("--cum", '')
+			for c in string: 
+				if c == " ":
+					output += " "
+				elif i % 2 == 0:
+					output += f"**{c}**"
+				else:
+					output += c
+				i+=1
+			await message.delete()
+			await message.channel.send(output)
+
 		if "--remove" in message.content:
 			await message.delete()
 			# remove message
-			
-		elif "--say" in message.content:
-			await message.channel.send(message.content.replace("--say",''))
-			# make wilson say message contents
 
 		#elif "--quote" in message.content or "--q" in message.content:
 			#await message.channel.send(f"\"{message.content.replace("--quote",'')}\" - {message.author.name}")

@@ -12,3 +12,4 @@ __pycache__/*
 ./data/user/*
 ./data/guild/*
 ./data/__pycache__/*
+./data/lists/*
