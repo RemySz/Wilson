@@ -80,18 +80,18 @@ class Lists(commands.Cog, name="Lists"):
 	async def remove_subcommand(self, ctx, name: str, index: int):
 		embed = discord.Embed(colour=discord.Colour.random())
 		elements = []
+		i: int = 0
 		try:
 			with open(f"./data/lists/{name}.txt", 'r') as f:
 				for line in f.readlines():
 					if line.startswith("#"):
-						pass
+						i-=1
 					elif line == " " or line == "\n":
 						pass
 					else:
 						elements.append(line)
 
 			with open(f"./data/lists/{name}.txt", 'w') as f:
-				i = 0
 				for element in elements:
 					if elements[index] == element:
 						elements.remove(element)

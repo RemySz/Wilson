@@ -1,0 +1,44 @@
+{
+	"Wayne": {
+		"image_path": "https://cdn.discordapp.com/attachments/783798663045447722/824714677371797515/Wayne.jpg",
+		"attack": 3,
+		"defense": 4,
+		"agility": 3,
+		"health": 6
+	},
+	"Wilson": {
+		"image_path": "/assets/pokemon/wilson.png",
+		"attack": 2,
+		"defense": 5,
+		"agility": 1,
+		"health": 5
+	},
+	"Ben": {
+		"image_path": "/assets/pokemon/ben.png",
+		"attack": 1,
+		"defense": 2,
+		"agility": 3,
+		"health": 5
+	},
+	"Tim": {
+		"image_path": "/assets/pokemon/tim.png",
+		"attack": 1,
+		"defense": 1,
+		"agility": 4,
+		"health": 5
+	},
+	"Remy": {
+		"image_path": "/assets/pokemon/remy.png",
+		"attack": 1,
+		"defense": 2,
+		"agility": 2,
+		"health": 5
+	},
+	"Brandon": {
+		"image_path": "/assets/pokemon/brandon.png",
+		"attack": 2,
+		"defense": 2,
+		"agility": 1,
+		"health": 5
+	}
+}
