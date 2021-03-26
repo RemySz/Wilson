@@ -1,16 +1,23 @@
 import discord, json
 from discord.ext import commands
+from data.stream import DataStructure
+
+profile = {
+	"id": 0,
+	"pokemon": {},
+}
 
 class Instance:
 	def __init__(self, name: str, channel: int):
 		self.name = name  
-		self.channel = channel  
+		self.channel = channel 
 
 
 class Pokemon(commands.Cog, name="Pokemon"):
 	def __init__(self, bot):
 		self.bot = bot
 		self.active_pokemon = []
+		self.stream = DataStructure()
 
 
 	@commands.command(
@@ -76,10 +83,20 @@ class Pokemon(commands.Cog, name="Pokemon"):
 				)
 				embed.set_footer(text="The pokemon has been stored in your index (!index)")
 				await ctx.send(embed=embed)
-				self.active_pokemon.remove(
-					self.active_pokemon.index(Instance(name, channel))
-				)
+				print(self.active_pokemon)
+				self.active_pokemon.remove(pokemon)
 				# add pokemon to user's index
+				with open("pokemon/data/pokemon.json", 'r') as file:
+					poke = json.load(file)
+				self.stream.load(ctx.author.id, "data/user/")
+				self.stream.data["pokemon"][name] = {
+					"level": 0,
+					"health": poke[name]["health"],
+					"attack": poke[name]["attack"],
+					"defense": poke[name]["defense"],
+					"agility": poke[name]["agility"],
+				}
+				self.stream.dump("data/user/")
 				return
 		embed.set_author(name="Pokemon could not be found!", icon_url=ctx.author.avatar_url)
 		await ctx.send(embed=embed)

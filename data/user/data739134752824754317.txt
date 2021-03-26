@@ -1,4 +1,5 @@
-name: Соковийдемон#5619
+name: Соковий демон#5619
 id: 739134752824754317
 access_level: 0
 active_access_level: 0
+pokemon: {}

@@ -13,3 +13,4 @@ __pycache__/*
 ./data/guild/*
 ./data/__pycache__/*
 ./data/lists/*
+data/user/*

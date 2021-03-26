@@ -1,20 +1,42 @@
 import os
 from keep_alive import keep_alive
 from discord.ext import commands
-#from threading import Thread
-#from . import terminal
+import discord
+from cogs.__init__ import AccessLevel
+from data.stream import DataStructure
 
+intents = discord.Intents.all()
 bot = commands.Bot(
 	command_prefix="::",  
-	case_insensitive=True
+	case_insensitive=True,
+	intents=intents
 )
 
 bot.author_id = None # for now
 
 @bot.event 
 async def on_ready():
+	stream = DataStructure()
 	print("I'm in")
 	print(bot.user)
+	"""for guild in bot.guilds: 
+		for member in guild.members:
+			struct_data = {
+				"name": member.name + '#' + member.discriminator, 
+				"id": member.id,
+				"access_level": AccessLevel.Member,
+				"active_access_level": AccessLevel.Member,
+				"pokemon": {}
+			}
+			stream.clear() 
+			if stream.load(member.id, "data/user/") != Exception:
+				pass
+			stream.data = struct_data 
+			stream.user_id = member.id
+			stream.dump("data/user/")
+			print(f"LOGGED {member.id}")"""
+
+	del stream
 
 try:
 	with open("./config/cogs.txt",'r') as f:

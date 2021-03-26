@@ -7,35 +7,35 @@
 		"health": 6
 	},
 	"Wilson": {
-		"image_path": "/assets/pokemon/wilson.png",
+		"image_path": "https://cdn.discordapp.com/attachments/783798663045447722/824936803827974174/Wilson.jpg",
 		"attack": 2,
 		"defense": 5,
 		"agility": 1,
 		"health": 5
 	},
 	"Ben": {
-		"image_path": "/assets/pokemon/ben.png",
+		"image_path": "https://cdn.discordapp.com/attachments/783798663045447722/824936839142965298/Ben.jpg",
 		"attack": 1,
 		"defense": 2,
 		"agility": 3,
 		"health": 5
 	},
 	"Tim": {
-		"image_path": "/assets/pokemon/tim.png",
+		"image_path": "https://cdn.discordapp.com/attachments/783798663045447722/824936795551694878/Tim.jpg",
 		"attack": 1,
 		"defense": 1,
 		"agility": 4,
 		"health": 5
 	},
 	"Remy": {
-		"image_path": "/assets/pokemon/remy.png",
+		"image_path": "https://cdn.discordapp.com/attachments/783798663045447722/824387628420825188/image0.jpg",
 		"attack": 1,
 		"defense": 2,
 		"agility": 2,
 		"health": 5
 	},
 	"Brandon": {
-		"image_path": "/assets/pokemon/brandon.png",
+		"image_path": "https://cdn.discordapp.com/attachments/783798663045447722/824936830025596958/Brandon.jpg",
 		"attack": 2,
 		"defense": 2,
 		"agility": 1,

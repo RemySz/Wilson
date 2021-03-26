@@ -11,3 +11,4 @@ cogs.mod
 cogs.math
 cogs.fun
 cogs.lists
+cogs.pokemon
