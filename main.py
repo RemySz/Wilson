@@ -1,6 +1,6 @@
-import os
 import discord
 from discord.ext import commands
+from discord_slash import SlashCommand
 
 intents = discord.Intents.all()
 bot = commands.Bot(
@@ -8,6 +8,8 @@ bot = commands.Bot(
     case_insensitive=True,
     intents=intents
 )
+slash = SlashCommand(bot, sync_commands=True)
+
 
 @bot.event
 async def on_ready():
@@ -23,5 +25,5 @@ if __name__ == "__main__":
         bot.load_extension(extension)
         print(f"Loaded {extension}")
 
-_TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
+_TOKEN = open("TOKEN", 'r').read()
 bot.run(_TOKEN)
