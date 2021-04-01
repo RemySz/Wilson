@@ -1,8 +1,8 @@
 import discord
 import random
-from main import slash
+from discord_slash import cog_ext
 from discord.ext import commands
-from lib.queue import *
+import lib.queue as lib
 
 
 class CoinFlip(commands.Cog, name="Coin Flip"):
@@ -12,12 +12,8 @@ class CoinFlip(commands.Cog, name="Coin Flip"):
     """
     def __init__(self, bot):
         self.bot = bot
-        self.queue = Queue()
+        self.stack = lib.Stack()
 
-    @slash.slash(
-        name="coinflip",
-        description="Simple. Flips a coin."
-    )
     @commands.group(
         name="coinflip",
         pass_context=True,
@@ -45,8 +41,23 @@ class CoinFlip(commands.Cog, name="Coin Flip"):
         name="bet",
         pass_context=True
     )
-    async def coin_flip_bet(self, ctx, starting_bet_amount: int):
+    async def coin_flip_bet(self, ctx, bet_amount: int):
         pass
+        """
+        ~ TODO ~
+        1. Create bet stack
+        2. Add author and amount to stack
+        3. Set stack to active (allows challengers)
+        4. Start timer
+        5. Add challengers to stack 
+        6. When timer runs out deactivate stack 
+        7. Sort challengers 
+        8. Output bet winner
+        9. Add money to winner balance
+        10. delete stack
+        """
+
+
 
 
 def setup(bot):

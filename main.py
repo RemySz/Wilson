@@ -10,7 +10,6 @@ bot = commands.Bot(
 )
 slash = SlashCommand(bot, sync_commands=True)
 
-
 @bot.event
 async def on_ready():
     print(bot.user)
@@ -20,10 +19,10 @@ extensions = [
     "cogs.games"
 ]
 
-if __name__ == "__main__":
-    for extension in extensions:
-        bot.load_extension(extension)
-        print(f"Loaded {extension}")
+
+for extension in extensions:
+    bot.load_extension(extension)
+    print(f"Loaded {extension}")
 
 _TOKEN = open("TOKEN", 'r').read()
 bot.run(_TOKEN)

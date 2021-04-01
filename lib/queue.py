@@ -2,6 +2,14 @@
 import random
 
 
+class StackActivityError(Exception):
+    def __init__(self, message="Stack object is not active. Please activity it by .set_author(author: int)"):
+        self.message = message
+
+    def __repr__(self):
+        return self.message
+
+
 class QueueToken:
     TokenCount: int
     """
@@ -59,9 +67,11 @@ class Stack:
         self.stack_value = None  # Current highest value
         self.base_value = None  # Base value to add challenger to stack
         self.challengers = []
+        self.active = False
 
     def set_author(self, author: int):
         self.author = author
+        self.active = True
 
     def add_challenger(self, challenger: int, value: int):
         if self.base_value is not None and value > self.base_value:
@@ -75,22 +85,9 @@ class Stack:
     def sort(self):
         """
         Sorts Stack by challenger value.
-        bubble sort :)
         """
+        self.challengers = sorted(self.challengers, key=lambda k: k['VAL'])
 
-        challengers = []
-        values = []
-
-        for challenger in self.challengers:
-            challengers.append(challenger["ID"])
-            values.append(challenger["VAL"])
-
-        for i in range(len(values)):
-            if values[i] < values [i+1]:
-                pass  # TODO
-
-        del challengers
-        del values
 
 
 
