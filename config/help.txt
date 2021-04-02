@@ -1,3 +1,0 @@
-#	Help.txt
-#	Stores help message
-(WIP)

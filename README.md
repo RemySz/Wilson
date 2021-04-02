@@ -1,2 +1,0 @@
-# Wilson
-Wilson Discord Bot
