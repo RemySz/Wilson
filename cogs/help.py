@@ -12,12 +12,33 @@ class Help(commands.Cog, name="help"):
             }
         ]
 
+    def get_commands(self):
+        keywords=["arguments", "subcommands", "name", "description", "aliases"]
+        raw = ""
+        with open("../data/help/commands.txt", 'r') as file:
+            config = file.readlines()
+            for line in config:
+                if line.startswith('#'):
+                    config.remove(line)
+            config = [
+                line.replace(' ', '') for line in config
+            ]
+            config = [
+                line.replace('\n', '') for line in config
+            ]
+            for line in config:
+                raw += line
+            print(raw)
+
+
+
     @commands.group(
         name="help",
         pass_context=True,
         aliases=["?"]
     )
     async def help(self, ctx, command=None):
+        self.get_commands()
         if ctx.invoked_subcommand is None:
             if command is not None:
                 embed = discord.Embed(colour=discord.Colour.random())
