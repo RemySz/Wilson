@@ -1,0 +1,7 @@
+{
+  "cogs": [
+    "games",
+    "help",
+    "dev"
+  ]
+}
