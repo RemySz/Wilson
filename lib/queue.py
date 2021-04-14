@@ -1,5 +1,12 @@
 # Queue system file
 import random
+import threading
+import time#
+
+
+def StartTimer(seconds: int):
+    time.sleep(seconds)
+    return
 
 
 class StackActivityError(Exception):
@@ -68,6 +75,7 @@ class Stack:
         self.base_value = None  # Base value to add challenger to stack
         self.challengers = []
         self.active = False
+        self.timer = 0
 
     def set_author(self, author: int):
         self.author = author
@@ -87,6 +95,16 @@ class Stack:
         Sorts Stack by challenger value.
         """
         self.challengers = sorted(self.challengers, key=lambda k: k['VAL'])
+
+    def start_timer(self, seconds):
+        self.timer = threading.Thread(
+            target=StartTimer,
+            args=(seconds, )
+        )
+        self.timer.start()
+        self.timer.join()
+        return "Finished"
+
 
 
 
