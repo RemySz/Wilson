@@ -1,7 +1,8 @@
 # Queue system file
 import random
 import threading
-import time#
+import time
+import json
 
 
 def StartTimer(seconds: int):
@@ -106,7 +107,36 @@ class Stack:
         return "Finished"
 
 
+class DataQueue:
+    ids = []
+    """
+    Creates a queue of objects where data is stored an manipulated.
+    
+    Example:
+        Storing a list of guilds storing a list of channels containing a list of pokemon :cool_steve:
+    """
+    def __new__(cls):
+        with open("../data/data_queue/config.json", 'r') as file:
+            config = json.load(file)
+            DataQueue.ids = config["ids"]
 
+    def __init__(self):
+        self.data = []
+        # TODO: data id system to keep track of guilds {}
+
+    def add(self, obj):
+        self.data.append(obj)
+
+    def remove(self, obj):
+        self.data.remove(obj)
+
+    # TODO: Timer function
+
+    # TODO: Unloading objects
+
+    # TODO: Loading objects
+
+    # TODO: Automatically loading/unloading objects
 
 
 
