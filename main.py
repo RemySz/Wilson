@@ -16,7 +16,8 @@ async def on_ready():
     print("Readying up")
 
 extensions = [
-    "cogs.games"
+    "cogs.games",
+    "cogs.token"
 ]
 
 
