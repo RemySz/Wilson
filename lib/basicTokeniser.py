@@ -39,7 +39,8 @@ class Lexer:
             self.ptr += 1
         return self.tokens
 
-    # TODO: Figure out a way to parse shit
+    # Make simple data language e.g. x = 5; t = "T"; no = false;
+    # Gonna need to rework interpreter (maybe using regex to simplify things)
 
 
 

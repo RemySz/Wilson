@@ -17,7 +17,8 @@ async def on_ready():
 
 extensions = [
     "cogs.games",
-    "cogs.regex"
+    "cogs.regex",
+    "cogs.fun"
 ]
 
 
