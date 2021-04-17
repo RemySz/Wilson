@@ -1,4 +1,11 @@
 # Queue system file
+"""
+TODO: This entire section needs a rework
+I think it's best to completely rethink why this is needed.
+Seemed like a good idea at the beginning but now it's actual use
+is sort of slim.
+Need to heavily consider what data structure I will need for the bot.
+"""
 import random
 import threading
 import time
@@ -122,7 +129,6 @@ class DataQueue:
 
     def __init__(self):
         self.data = []
-        # TODO: data id system to keep track of guilds {}
 
     def add(self, obj):
         self.data.append(obj)
@@ -130,13 +136,6 @@ class DataQueue:
     def remove(self, obj):
         self.data.remove(obj)
 
-    # TODO: Timer function
-
-    # TODO: Unloading objects
-
-    # TODO: Loading objects
-
-    # TODO: Automatically loading/unloading objects
 
 
 
