@@ -13,7 +13,7 @@ class Gifs(commands.Cog, name="Gifs!"):
         self.giphy = GiphyAPIWrapper()
 
     @staticmethod
-    def create_gif_embed(ctx, member, gif):
+    def create_gif_embed(ctx, member, gif, motto):
         """
         This just stops repeated code within each function.
         It creates a custom embed message. This makes the actual gif command code very readable.
@@ -21,7 +21,7 @@ class Gifs(commands.Cog, name="Gifs!"):
         embed = discord.Embed(colour=discord.Colour.random())
         killer = f"{(ctx.author.nick if ctx.author.nick is not None else ctx.author.name)}"
         member = f"{(member.nick if member.nick is not None else member.name)}"
-        embed.set_author(name=f"{killer} just killed {member}!", icon_url=ctx.author.avatar_url)
+        embed.set_author(name=motto.format(killer, member), icon_url=ctx.author.avatar_url)
         embed.set_image(url=gif)
         return embed
 
@@ -30,28 +30,28 @@ class Gifs(commands.Cog, name="Gifs!"):
         """
         Kill gif command -> returns a kill message and gif.
         """
-        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("kill")))
+        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("kill"), "{} just killed {}!"))
 
     @commands.command(name="kiss")
     async def kiss_gif_command(self, ctx, member: discord.Member):
         """
         Kiss gif command -> returns a Kiss message and gif.
         """
-        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("kiss")))
+        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("kiss"), "{} just kissed {}!"))
 
     @commands.command(name="hug")
     async def hug_gif_command(self, ctx, member: discord.Member):
         """
         Hug gif command -> returns a hug message and gif.
         """
-        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("hug")))
+        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("hug"), "{} just hugged {}!"))
 
     @commands.command(name="boo")
     async def boo_gif_command(self, ctx, member: discord.Member):
         """
         Boo gif command -> returns a boo message and gif.
         """
-        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("boo")))
+        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("boo"), "{}: BOO {} BOO!"))
 
 
 def setup(bot):
