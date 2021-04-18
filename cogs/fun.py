@@ -53,6 +53,20 @@ class Gifs(commands.Cog, name="Gifs!"):
         """
         await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("boo"), "{}: BOO {} BOO!"))
 
+    @commands.command(name="fish")
+    async def fish_gif_command(self, ctx, member: discord.Member):
+        """
+        Returns a fish message and gif.
+        """
+        await ctx.send(
+            embed=self.create_gif_embed(
+                ctx,
+                member,
+                self.giphy.search("fish"),
+                "{}'s got two fists and a fish, and {} just ate it."
+            )
+        )
+
 
 def setup(bot):
     bot.add_cog(Gifs(bot))

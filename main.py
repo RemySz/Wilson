@@ -9,6 +9,8 @@ bot = commands.Bot(
     intents=intents
 )
 slash = SlashCommand(bot, sync_commands=True)
+bot.remove_command("help")
+
 
 @bot.event
 async def on_ready():
@@ -18,7 +20,8 @@ async def on_ready():
 extensions = [
     "cogs.games",
     "cogs.regex",
-    "cogs.fun"
+    "cogs.fun",
+    "cogs.help"
 ]
 
 
