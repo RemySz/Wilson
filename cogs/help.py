@@ -27,9 +27,19 @@ class Help(commands.Cog, name="help"):
         embed = discord.Embed(colour=discord.Colour.random())
         if category is None:
             embed.set_author(name="Help menu")
-            embed.add_field(name="Games", value=str(self.get_category("games")))
-            embed.add_field(name="Economy", value=str(self.get_category("economy")))
-            await ctx.send(embed=embed)
+            embed.add_field(name="Games", value="To see the games commands use: '::help games'")
+            embed.add_field(name="Economy", value="To see the economy commands use: '::help economy'")
+        else:
+            embed.set_author(name=f"Help: {category.lower()} commands")
+            for game in self.get_category(category.lower()):
+                string = "Commands: "
+                for i in range(game["commands"]):
+                    string += game["commands"][i]
+                string += f"\n\n{game['description']}"
+                embed.add_field(name=game["name"], value=string, inline=False)
+        await ctx.send(embed=embed)
+        return
+
 
 
 

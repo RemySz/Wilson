@@ -2,22 +2,19 @@
   "games": [
     {
       "name": "Rock Paper Scissors",
-      "command":  "rps",
-      "subcommands": ["@user"],
+      "commands":  ["rps"],
       "description": "A game as old as time. The legendary Rock Paper Scissors!"
     },
     {
       "name": "Coin Flip",
-      "command": "coinflip",
-      "subcommands": [],
+      "commands": ["coinflip"],
       "description": "Simple. Flip a coin."
     }
   ],
   "economy": [
     {
       "name": "Balance",
-      "commands": "balance",
-      "subcommands": ["@user"],
+      "commands": ["balance"],
       "description": "Checks your balance. No this isn't real money. -_-"
     }
   ]

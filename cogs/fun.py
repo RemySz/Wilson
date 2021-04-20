@@ -67,6 +67,20 @@ class Gifs(commands.Cog, name="Gifs!"):
             )
         )
 
+    @commands.command(name="sex")
+    async def sex_gif_command(self, ctx, member: discord.Member):
+        """
+        Sex gif command -> returns a sex message and gif.
+        """
+        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search("sex"), "{} did the sex on {}!"))
+
+    @commands.command(name="gif")
+    async def gif_command(self, ctx, search, member: discord.Member):
+        """
+        Boo gif command -> returns a boo message and gif.
+        """
+        await ctx.send(embed=self.create_gif_embed(ctx, member, self.giphy.search(search), "Woah {}! {} did you see that?!"))
+
 
 def setup(bot):
     bot.add_cog(Gifs(bot))
