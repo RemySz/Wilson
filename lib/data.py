@@ -15,6 +15,7 @@ Classes:
 # Packages
 from enum import Enum
 import json
+import sqlite3
 
 
 class FileType(Enum):
@@ -29,6 +30,10 @@ class DataSteam:
     Finds user file and returns a dictionary of all the user information inside.
     """
     def __init__(self, directory="", file=None, type_: FileType = FileType.Json):
+        """
+        Constructor:
+            Sets everything up. If a file is specified it will automatically load the contents
+        """
         self.file = file
         self.directory = directory
         self.contents: str
@@ -42,6 +47,9 @@ class DataSteam:
                     return
 
     def get_file(self, file):
+        """
+        Sets self.contents to the contents of the file specified
+        """
         self.file = file
         with open(self.directory + self.file, 'r') as f:
             if self.type == FileType.Json:
@@ -55,22 +63,21 @@ class DataSteam:
         return
 
     def field(self, fields=None):
+        """
+        Gets specific fields from self.contents
+        """
         output = 0
         if fields is not None:
             fields = list(fields)
             output = self.contents[fields[0]]
             if len(fields) == 1:
                 del fields
-                return output
             else:
                 for i in range(1, len(fields)-1):
                     output = output[fields[i]]
                 del fields
-                return output
+            return output
         return
-
-
-
 
 
 class DataSearch:
@@ -82,9 +89,16 @@ class DataSearch:
 
 class DataBase:
     """
-
+    This is specifically for SQL interactions
     """
-    pass
+    def __new__(cls, name: str):
+        pass
+
+    def __init__(self, name: str, directory=None):
+        self.name = name
+        self.directory = directory
+
+        
 
 
 

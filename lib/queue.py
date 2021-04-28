@@ -9,3 +9,15 @@ Ideas:
     Stack: store a list of information. Information will be removed when a condition is met (usually a timer)
     Timer: tracks multiple stop watches.
 """
+
+
+class Tree:
+    pass
+
+
+class Stack:
+    pass
+
+
+class Timer:
+    pass
