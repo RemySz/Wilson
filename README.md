@@ -1,2 +1,2 @@
-# Wilson
-Wilson Discord Bot
+# Wilson Discord Bot
+A discord.py bot (discontinued)

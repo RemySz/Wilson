@@ -1,0 +1,21 @@
+{
+  "games": [
+    {
+      "name": "Rock Paper Scissors",
+      "commands":  ["rps"],
+      "description": "A game as old as time. The legendary Rock Paper Scissors!"
+    },
+    {
+      "name": "Coin Flip",
+      "commands": ["coinflip"],
+      "description": "Simple. Flip a coin."
+    }
+  ],
+  "economy": [
+    {
+      "name": "Balance",
+      "commands": ["balance"],
+      "description": "Checks your balance. No this isn't real money. -_-"
+    }
+  ]
+}
